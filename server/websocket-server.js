@@ -12,6 +12,9 @@ module.exports = function (server) {
     connection.on('message', function(message) {
       if (message.type === 'utf8') {
         switch (message.utf8Data) {
+          case 'user.current':
+            connection.sendUTF(JSON.stringify({ type: 'user.current', data: getCurrentUser() }));
+            break;
           case 'kikoo':
             connection.sendUTF(JSON.stringify( { type: 'kikoo', data: 'LOL'} ));
             break;
@@ -31,3 +34,12 @@ module.exports = function (server) {
     port = server.address().port;
   console.log('WebSocket Server listening on http://%s:%s', host, port);
 };
+
+
+function getCurrentUser () {
+  return {
+    id: 1,
+    name: 'Hadrien',
+    scrummaster: true
+  };
+}

@@ -21,19 +21,24 @@ export class Room {
 
   activate(params, routeConfig, navigationInstruction) {
     // Check current user rights. If user is not scrummaster, redirect to /:room/play
-    if (!this.Users.current.scrummaster) {
-      this.Router.navigate(`/${params.room}/play`);
-    }
+    let userPromise = this.Users.getCurrent()
+      .then (user => {
+        if (!user.scrummaster) {
+          this.Router.navigate(`/${params.room}/play`);
+        }
+      });
 
     // Room path
     this.room = params.room;
 
     // Load stories
-    return this.Stories.getAll()
+    let storiesPromise = this.Stories.getAll()
       .then(stories => {
         this.stories = stories;
         this._filterStories();
       });
+
+    return Promise.all([userPromise, storiesPromise]);
   }
 
   _filterStories () {

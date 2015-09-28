@@ -14,14 +14,12 @@ export class Users {
     this.Api = Api;
   }
 
-  get current () {
-    if (!this._current) {
-      let userData;
-      try {
-        userData = JSON.parse(localStorage.getItem('user'));
-      } catch(e) {}
-      this._current = new User(userData || undefined);
-    }
-    return this._current;
+  getCurrent() {
+    console.log(this.Api);
+    return this.Api.request('user', 'current')
+      .then(data => {
+        this._current = new User(data);
+        return this._current;
+      });
   }
 }
