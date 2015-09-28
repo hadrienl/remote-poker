@@ -20,7 +20,9 @@
   },
   "scripts": {
     "test": "gulp test",
-    "e2e": "gulp serve e2e"
+    "e2e": "gulp serve e2e",
+    "start": "node server --production",
+    "dev": "node run-scripts/dev.js"
   },
   "devDependencies": {
     "aurelia-bundler": "^0.1.6",
@@ -98,6 +100,7 @@
     }
   },
   "dependencies": {
+    "express": "^4.13.3",
     "websocket": "^1.0.21"
   }
 }
