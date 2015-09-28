@@ -1,3 +1,6 @@
+import {inject} from 'aurelia-framework';
+import {Api} from '../api/api';
+
 export class User {
   constructor (data = {}) {
     this.name = data.name;
@@ -5,7 +8,12 @@ export class User {
   }
 }
 
+@inject(Api)
 export class Users {
+  constructor (Api) {
+    this.Api = Api;
+  }
+
   get current () {
     if (!this._current) {
       let userData;

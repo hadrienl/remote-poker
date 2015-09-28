@@ -14,6 +14,10 @@ gulp.task('serve', ['build'], function(done) {
       middleware: function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
+      },
+      proxy: {
+        target: 'http://localhost:4321',
+        ws: true
       }
     }
   }, done);
