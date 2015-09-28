@@ -1,0 +1,21 @@
+<template>
+  <div
+    show.bind="!showCreateRoomForm">
+    <button
+      click.trigger="displayRoomForm()">
+      Create a new room
+    </button>
+  </div>
+  <div
+    show.bind="showCreateRoomForm">
+    <form
+      submit.trigger="createNewRoom(this)">
+      <input
+        value.bind="room.name">
+      <button
+        type="submit">
+        Create
+      </button>
+    </form>
+  </div>
+</template>
