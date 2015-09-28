@@ -1,3 +1,5 @@
+var Users = require('./users');
+
 module.exports = function (server) {
   var WebSocketServer = require('websocket').server,
     wsserver = new WebSocketServer({
@@ -8,18 +10,40 @@ module.exports = function (server) {
     var connection = request.accept(null, request.origin);
 
     // Test user authentification with request.cookies
+    var user;
 
     connection.on('message', function(message) {
       if (message.type === 'utf8') {
-        switch (message.utf8Data) {
+        var type, data;
+        try {
+          message = JSON.parse(message.utf8Data);
+          data = message.data;
+          message = message.message;
+        } catch (e) {
+          message = message.utf8Data;
+        }
+
+        switch (message) {
           case 'user.current':
-            connection.sendUTF(JSON.stringify({ type: 'user.current', data: getCurrentUser() }));
+            if (user) {
+              connection.sendUTF(JSON.stringify({ type: 'user.current', data: user }));
+            } else {
+              connection.sendUTF(JSON.stringify({ type: 'user.current', error: 'not found' }));
+            }
             break;
-          case 'kikoo':
-            connection.sendUTF(JSON.stringify( { type: 'kikoo', data: 'LOL'} ));
+
+          case 'user.auth':
+            user = Users.getByUsername(data.username);
+            console.log(user);
+            if (user) {
+              connection.sendUTF(JSON.stringify({ type: 'user.auth', data: user }));
+            } else {
+              connection.sendUTF(JSON.stringify({ type: 'user.auth', error: 'not found' }));
+            }
             break;
+
           default:
-            connection.sendUTF('lol');
+            connection.sendUTF('');
         }
       }
     });
@@ -34,12 +58,3 @@ module.exports = function (server) {
     port = server.address().port;
   console.log('WebSocket Server listening on http://%s:%s', host, port);
 };
-
-
-function getCurrentUser () {
-  return {
-    id: 1,
-    name: 'Hadrien',
-    scrummaster: true
-  };
-}

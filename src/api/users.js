@@ -15,7 +15,6 @@ export class Users {
   }
 
   getCurrent() {
-    console.log(this.Api);
     return this.Api.request('user', 'current')
       .then(data => {
         this._current = new User(data);

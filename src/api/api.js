@@ -57,7 +57,10 @@ export class Api {
       }
 
       let message = `${resource}.${method}`;
-      this._socket.send(message);
+      this._socket.send(JSON.stringify({
+        message: message,
+        data: params
+      }));
       let answer = this.on(message, data => {
         resolve(data);
         answer();

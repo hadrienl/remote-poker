@@ -101,6 +101,7 @@
   },
   "dependencies": {
     "express": "^4.13.3",
+    "lodash": "^3.10.1",
     "websocket": "^1.0.21"
   }
 }
