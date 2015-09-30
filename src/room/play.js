@@ -11,10 +11,13 @@ export class Play {
 
   activate(params, routeConfig, navigationInstruction) {
     // Check current user rights. If ID param is set and user is not scrummaster, redirect to /:room/play
-    if (params.id &&
-        !this.Users.current.scrummaster) {
-      this.Router.navigate(`/${params.room}/play`);
-    }
+    let userPromise = this.Users.getCurrent()
+      .then (user => {
+        console.log(user);
+        if (!user.scrummaster) {
+          //this.Router.navigate(`/${params.room}/play`);
+        }
+      });
 
     this.id = params.id;
 
@@ -28,5 +31,7 @@ export class Play {
     } else {
       // Player mode, we'll get the id from websocket
     }
+
+    return userPromise;
   }
 }

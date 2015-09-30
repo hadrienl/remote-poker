@@ -1,24 +1,3 @@
 <template>
-  <h2>
-    To estimate
-  </h2>
-  <ul>
-    <li
-      repeat.for="story of storiesToEstimate">
-      <a
-        href="#/${$parent.room}/play/${story.id}">
-        ${story.title}
-      </a>
-    </li>
-  </ul>
-
-  <h2>
-    Estimated
-  </h2>
-  <ul>
-    <li
-      repeat.for="story of storiesEstimated">
-      ${story.estimation} — ${story.title}
-    </li>
-  </ul>
+  <router-view></router-view>
 </template>

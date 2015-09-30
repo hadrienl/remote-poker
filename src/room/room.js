@@ -1,13 +1,31 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
+import {Rooms} from '../api/rooms';
 import {Users} from '../api/users';
 import {Stories} from '../api/stories';
 
-@inject(Router, Users, Stories)
+@inject(Router, Rooms, Users, Stories)
 export class Room {
 
-  constructor (Router, Users, Stories) {
+  configureRouter(config, router) {
+    config.map([{
+      route: '',
+      name: 'stories-list',
+      moduleId: './stories-list'
+    }, {
+      route: '/play/:id',
+      name: 'play story',
+      moduleId: './play'
+    }, {
+      route: '/play',
+      name: 'play',
+      moduleId: './play'
+    }]);
+  }
+
+  constructor (Router, Rooms, Users, Stories) {
     this.Router = Router;
+    this.Rooms = Rooms;
     this.Users = Users;
     this.Stories = Stories;
   }
@@ -23,26 +41,23 @@ export class Room {
     // Check current user rights. If user is not scrummaster, redirect to /:room/play
     let userPromise = this.Users.getCurrent()
       .then (user => {
+        console.log(user);
         if (!user.scrummaster) {
-          this.Router.navigate(`/${params.room}/play`);
+          //this.Router.navigate(`/${params.room}/play`);
         }
       });
 
     // Room path
     this.room = params.room;
 
-    // Load stories
-    let storiesPromise = this.Stories.getAll()
-      .then(stories => {
-        this.stories = stories;
-        this._filterStories();
-      });
+    this.Rooms.enter(this.room);
+    console.log('activate');
 
-    return Promise.all([userPromise, storiesPromise]);
+    return userPromise;
   }
 
-  _filterStories () {
-    this.storiesToEstimate = this.stories.filter(story => story.estimation === null);
-    this.storiesEstimated = this.stories.filter(story => story.estimation !== null);
+  deactivate () {
+    this.Rooms.leave(this.room);
+    console.log('deactivate');
   }
 }

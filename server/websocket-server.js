@@ -34,12 +34,19 @@ module.exports = function (server) {
 
           case 'user.auth':
             user = Users.getByUsername(data.username);
-            console.log(user);
             if (user) {
               connection.sendUTF(JSON.stringify({ type: 'user.auth', data: user }));
             } else {
               connection.sendUTF(JSON.stringify({ type: 'user.auth', error: 'not found' }));
             }
+            break;
+
+          case 'room.enter':
+            console.log('entered room', data.id);
+            break;
+
+          case 'room.leave':
+            console.log('leaved room', data.id);
             break;
 
           default:

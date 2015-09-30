@@ -29,14 +29,6 @@ export class App {
       route: '/:room',
       name: 'room',
       moduleId: 'room/room'
-    }, {
-      route: '/:room/play/:id',
-      name: 'play story',
-      moduleId: 'room/play'
-    }, {
-      route: '/:room/play',
-      name: 'play',
-      moduleId: 'room/play'
     }]);
 
     this.router = router;
