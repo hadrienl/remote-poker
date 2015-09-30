@@ -37,6 +37,7 @@ module.exports = function (server) {
           }
           service[methodName](data, connection, request, server);
         } catch (e) {
+          console.log(e);
           connection.sendUTF('Method not found');
         }
       }

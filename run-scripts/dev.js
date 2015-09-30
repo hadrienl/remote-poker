@@ -1,7 +1,7 @@
 var exec = require('child_process').exec,
     backend, frontend;
 
-backend = exec('node server');
+backend = exec('node server/dist');
 backend.stdout.pipe(process.stdout, { end: false });
 backend.stderr.pipe(process.stderr, { end: false });
 

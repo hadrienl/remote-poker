@@ -22,7 +22,8 @@
     "test": "gulp test",
     "e2e": "gulp serve e2e",
     "start": "node server --production",
-    "dev": "node run-scripts/dev.js"
+    "dev": "npm run build-server && node run-scripts/dev.js",
+    "build-server": "node run-scripts/build-server.js"
   },
   "devDependencies": {
     "aurelia-bundler": "^0.1.6",
