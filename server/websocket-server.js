@@ -23,34 +23,21 @@ module.exports = function (server) {
           message = message.utf8Data;
         }
 
-        switch (message) {
-          case 'user.current':
-            if (user) {
-              connection.sendUTF(JSON.stringify({ type: 'user.current', data: user }));
-            } else {
-              connection.sendUTF(JSON.stringify({ type: 'user.current', error: 'not found' }));
-            }
-            break;
+        message = message.split(/\./);
+        try {
+          var serviceName = message[0];
+          if (!serviceName.match(/^[a-z]+$/)) {
+            throw new Error('Invalid service name');
+          }
+          var service = require('./services/' + serviceName);
 
-          case 'user.auth':
-            user = Users.getByUsername(data.username);
-            if (user) {
-              connection.sendUTF(JSON.stringify({ type: 'user.auth', data: user }));
-            } else {
-              connection.sendUTF(JSON.stringify({ type: 'user.auth', error: 'not found' }));
-            }
-            break;
-
-          case 'room.enter':
-            console.log('entered room', data.id);
-            break;
-
-          case 'room.leave':
-            console.log('leaved room', data.id);
-            break;
-
-          default:
-            connection.sendUTF('');
+          var methodName = message[1];
+          if (!methodName.match(/^[a-zA-Z]+$/)) {
+            throw new Error('Invalid method name');
+          }
+          service[methodName](data, connection, request, server);
+        } catch (e) {
+          connection.sendUTF('Method not found');
         }
       }
     });
