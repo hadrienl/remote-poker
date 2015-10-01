@@ -1,0 +1,14 @@
+{
+  "folders":
+  [{
+    "path": ".",
+    "folder_exclude_patterns": [
+      "dist",
+      "doc",
+      "jspm_packages",
+      "node_modules",
+      "run-scripts",
+      "server/dist",
+    ]
+  }]
+}
