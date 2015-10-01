@@ -1,11 +1,11 @@
 var exec = require('child_process').exec,
     backend, frontend;
 
-backend = exec('node server/dist');
+backend = exec('npm run watch-server');
 backend.stdout.pipe(process.stdout, { end: false });
 backend.stderr.pipe(process.stderr, { end: false });
 
-frontend = exec('gulp watch --color');
+frontend = exec('npm run start-front');
 frontend.stdout.pipe(process.stdout, { end: false });
 frontend.stderr.pipe(process.stderr, { end: false });
 

@@ -23,6 +23,8 @@
     "e2e": "gulp serve e2e",
     "start": "node server --production",
     "dev": "npm run build-server && node run-scripts/dev.js",
+    "start-front": "node run-scripts/start-front.js",
+    "watch-server": "node run-scripts/watch-server.js",
     "build-server": "node run-scripts/build-server.js"
   },
   "devDependencies": {
@@ -54,6 +56,7 @@
     "require-dir": "^0.1.0",
     "run-sequence": "^1.0.2",
     "vinyl-paths": "^1.0.0",
+    "watch": "^0.16.0",
     "yargs": "^2.1.1"
   },
   "jspm": {
