@@ -2,10 +2,18 @@ export class Api {
   _listeners = [];
 
   constructor () {
+    this._connect();
+  }
+
+  _connect () {
     this._socket = new window.WebSocket(`ws:${location.hostname}:4321`);
 
     this._socket.onopen = () => {
       this._socket.onmessage = message => this.onMessage(message);
+    };
+
+    this._socket.onclose = () => {
+      setTimeout(() => this._connect(), 2000);
     };
   }
 
