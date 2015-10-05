@@ -38,26 +38,26 @@ export class Room {
   }
 
   activate(params, routeConfig, navigationInstruction) {
-    // Check current user rights. If user is not scrummaster, redirect to /:room/play
-    let userPromise = this.Users.getCurrent()
-      .then (user => {
-        console.log(user);
-        if (!user.scrummaster) {
-          //this.Router.navigate(`/${params.room}/play`);
-        }
-      });
-
     // Room path
     this.room = params.room;
 
-    this.Rooms.enter(this.room);
-    console.log('activate');
+    // Check current user rights. If user is not scrummaster, redirect to /:room/play
+    return this.Users.getCurrent()
+      .then (user => {
+        console.log('the user', user);
+        if (!user.scrummaster) {
+          this.Router.navigate(`/${params.room}/play`);
+          return;
+        }
 
-    return userPromise;
+        this.Rooms.enter(this.room);
+      })
+      .catch (err => {
+        this.Router.navigate(`/login?back=\/${params.room}`);
+      });
   }
 
   deactivate () {
     this.Rooms.leave(this.room);
-    console.log('deactivate');
   }
 }

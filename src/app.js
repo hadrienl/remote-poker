@@ -26,6 +26,10 @@ export class App {
       name: 'home',
       moduleId: 'home/home'
     }, {
+      route: '/login',
+      name: 'login',
+      moduleId: 'auth/login'
+    }, {
       route: '/:room',
       name: 'room',
       moduleId: 'room/room'

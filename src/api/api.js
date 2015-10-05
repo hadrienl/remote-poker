@@ -18,9 +18,11 @@ export class Api {
   }
 
   onMessage (message) {
-    let data;
+    let data, error;
     try {
-      data = JSON.parse(message.data);
+      message = JSON.parse(message.data);
+      data = message.data;
+      error = message.error;
     } catch (e) {
       data = {
         type: message.type,
@@ -29,8 +31,8 @@ export class Api {
     }
 
     this._listeners.forEach(listener => {
-      if (listener.message === data.type) {
-        listener.callback(data.data);
+      if (listener.message === message.type) {
+        listener.callback(error, data);
       }
     });
   }
@@ -69,8 +71,12 @@ export class Api {
         message: message,
         data: params
       }));
-      let answer = this.on(message, data => {
-        resolve(data);
+      let answer = this.on(message, (error, data) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(data);
+        }
         answer();
       });
     });

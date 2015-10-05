@@ -5,7 +5,15 @@ class Room {
 
   enter (data, connection, request, server) {
     console.log(`Entered room #${data.id}`);
-    
+
+    if (!connection.user) {
+      connection.sendUTF(JSON.stringify({
+        type: 'room.enter',
+        error: 'User is not authentified'
+      }));
+      return;
+    }
+
     let room = _.findWhere(this._rooms, { id: data.id});
 
     if (!room) {

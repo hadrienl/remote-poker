@@ -9,9 +9,6 @@ module.exports = function (server) {
   wsserver.on('request', function(request) {
     var connection = request.accept(null, request.origin);
 
-    // Test user authentification with request.cookies
-    var user;
-
     connection.on('message', function(message) {
       if (message.type === 'utf8') {
         var type, data;
